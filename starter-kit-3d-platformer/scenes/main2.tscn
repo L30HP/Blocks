@@ -1,0 +1,122 @@
+[gd_scene load_steps=14 format=3 uid="uid://d0sd2cndu5ci0"]
+
+[ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_6w1mw"]
+[ext_resource type="PackedScene" uid="uid://dl2ed4gkybggf" path="res://objects/player.tscn" id="2_5p0yy"]
+[ext_resource type="Script" path="res://scripts/view.gd" id="3_ll4rv"]
+[ext_resource type="PackedScene" uid="uid://bn76qy34neh7w" path="res://objects/ground.tscn" id="4_g5ukd"]
+[ext_resource type="PackedScene" uid="uid://cdvhhqd4xfsr1" path="res://objects/block.tscn" id="8_38qe3"]
+[ext_resource type="Script" path="res://scenes/spawns.gd" id="9_repgq"]
+[ext_resource type="PackedScene" uid="uid://l03wejjeuovf" path="res://objects/spawn_point.tscn" id="10_6a1xu"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="11_p3c30"]
+[ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="12_tq2xi"]
+[ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="13_da0w8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_38ys3"]
+font = ExtResource("13_da0w8")
+font_size = 48
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q36gj"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 2.89
+
+[sub_resource type="BoxMesh" id="BoxMesh_fp284"]
+material = SubResource("StandardMaterial3D_q36gj")
+size = Vector3(50, 1, 50)
+
+[node name="Main" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_6w1mw")
+
+[node name="Player" parent="." node_paths=PackedStringArray("view") instance=ExtResource("2_5p0yy")]
+view = NodePath("../View")
+
+[node name="View" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(0.707107, -0.298836, 0.640856, 0, 0.906308, 0.422618, -0.707107, -0.298836, 0.640856, 0, 0, 0)
+script = ExtResource("3_ll4rv")
+target = NodePath("../Player")
+
+[node name="Camera" type="Camera3D" parent="View"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.2)
+current = true
+fov = 40.0
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+shadow_enabled = true
+shadow_opacity = 0.75
+
+[node name="Ground" parent="." instance=ExtResource("4_g5ukd")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("11_p3c30")
+
+[node name="Icon" type="TextureRect" parent="HUD"]
+offset_left = 57.0
+offset_top = 67.0
+offset_right = 313.0
+offset_bottom = 323.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_tq2xi")
+
+[node name="x" type="Label" parent="HUD"]
+offset_left = 112.0
+offset_top = 64.0
+offset_right = 144.0
+offset_bottom = 123.0
+text = "×"
+label_settings = SubResource("LabelSettings_38ys3")
+
+[node name="Coins" type="Label" parent="HUD"]
+offset_left = 144.0
+offset_top = 64.0
+offset_right = 368.0
+offset_bottom = 123.0
+text = "0"
+label_settings = SubResource("LabelSettings_38ys3")
+
+[node name="Spawns" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 0)
+script = ExtResource("9_repgq")
+scene_to_spawn = ExtResource("8_38qe3")
+
+[node name="Points" type="Node3D" parent="Spawns"]
+
+[node name="SpawnPoint" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 11, 10.2)
+
+[node name="SpawnPoint2" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 10.2)
+
+[node name="SpawnPoint3" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 11, 10.2)
+
+[node name="SpawnPoint4" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 11, 0)
+
+[node name="SpawnPoint5" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+
+[node name="SpawnPoint6" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 11, 0)
+
+[node name="SpawnPoint7" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 11, -10.2)
+
+[node name="SpawnPoint8" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, -10.2)
+
+[node name="SpawnPoint9" parent="Spawns/Points" instance=ExtResource("10_6a1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 11, -10.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27, 0)
+visible = false
+mesh = SubResource("BoxMesh_fp284")
+
+[connection signal="coin_collected" from="Player" to="HUD" method="_on_coin_collected"]

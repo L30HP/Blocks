@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdvhhqd4xfsr1"]
+
+[ext_resource type="Script" path="res://objects/block.gd" id="1_m0u21"]
+[ext_resource type="AudioStream" uid="uid://oobd4newpv54" path="res://sounds/explosion.wav" id="2_8liee"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vildh"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vjgwk"]
+size = Vector3(10, 1, 10)
+
+[node name="Block" type="RigidBody3D" groups=["block"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 0)
+axis_lock_linear_x = true
+axis_lock_linear_z = true
+gravity_scale = 0.8
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("1_m0u21")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_vildh")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_vjgwk")
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_8liee")
